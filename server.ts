@@ -1,3 +1,4 @@
+import { gameOver, isGameOver } from "./src/game-over.ts";
 import { getNextPossibleActions } from "./src/get-next-possible-actions.ts";
 import { getInitialState, getNextState } from "./src/get-next-state.ts";
 import { GameState } from "./src/state.ts";
@@ -140,7 +141,7 @@ async function startGame() {
     return action;
   }
 
-  while (getNextPossibleActions(state).length > 0) {
+  while (!isGameOver(state)) {
     for (const player of players) {
       player.emitter!.emit(
         "send",
@@ -165,4 +166,18 @@ async function startGame() {
     }
     state = getNextState(state, action);
   }
+
+  gameOver(state);
+  for (const player of players) {
+    player.emitter!.emit(
+      "send",
+      new TextEncoder().encode(`\n 🏆 Player ${state.player} WIN !\n`)
+    );
+  }
+
+  for (const conn_ of connections) {
+    conn_.close();
+  }
+
+  server.close();
 }
