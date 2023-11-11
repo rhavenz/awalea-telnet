@@ -1,6 +1,6 @@
-import { getNextPossibleActions } from "./get-next-possible-actions.ts";
-import { getInitialState, getNextState } from "./get-next-state.ts";
-import { GameState } from "./state.ts";
+import { getNextPossibleActions } from "./src/get-next-possible-actions.ts";
+import { getInitialState, getNextState } from "./src/get-next-state.ts";
+import { GameState } from "./src/state.ts";
 import EventEmitter from "node:events";
 
 function printBoard(state: GameState, seat: 0 | 1) {
